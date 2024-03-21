@@ -1,0 +1,49 @@
+spring:
+  datasource:
+    driver-class-name: ${xihu.datasource.driver-class-name}
+    url: ${xihu.datasource.url}
+    username: ${xihu.datasource.username}
+    password: ${xihu.datasource.password}
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 5000MB
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true #开启驼峰命名法和下划线自动转换
+
+
+aliyun:
+  oss:
+    endpoint: ${xihu.alioss.endpoint}
+    bucket-name: ${xihu.alioss.bucket-name}
+    access-key-id: ${xihu.alioss.access-key-id}
+    access-key-secret: ${xihu.alioss.access-key-secret}
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com:
+      xihu:
+        conference:
+          xihu:
+            mapper: debug
+            service: info
+            controller: info
+
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.AlbumMapper">
+
+    <resultMap id="ImageAlbumVOMap" type="com.xihu.conference.xihu.vo.ImageAlbumVO">
+        <id column="id" property="id"></id>
+        <result column="count" property="count"></result>
+        <result column="like_num" property="likeNum"></result>
+        <result column="category" property="category"></result>
+        <!--配置imageVO集合信息
+            property:集合名称
+            ofType:当前集合的数据类型
+        -->
+        <collection property="images" ofType="com.xihu.conference.xihu.vo.ImageVO">
+            <id column="iid" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="column_type" property="columnType"></result>
+            <result column="type" property="type"></result>
+            <result column="url" property="url"></result>
+            <result column="album_id" property="albumId"></result>
+        </collection>
+    </resultMap>
+
+    <select id="showImageAlbum" resultMap="ImageAlbumVOMap">
+        select album.id,album.count,album.like_num,album.category,image.id iid,image.name,image.column_type,image.type,image.url,image.album_id from album,image where album.id=image.album_id and album.type=1
+    </select>
+
+    <resultMap id="VideoAlbumVOMap" type="com.xihu.conference.xihu.vo.VideoAlbumVO">
+        <id column="id" property="id"></id>
+        <result column="count" property="count"></result>
+        <result column="like_num" property="likeNum"></result>
+        <result column="category" property="category"></result>
+        <!--配置VideoVO集合信息
+            property:集合名称
+            ofType:当前集合的数据类型
+        -->
+        <collection property="videos" ofType="com.xihu.conference.xihu.vo.VideoVO">
+            <id column="vid" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="column_type" property="columnType"></result>
+            <result column="type" property="type"></result>
+            <result column="cover" property="cover"></result>
+            <result column="path" property="path"></result>
+            <result column="watch_count" property="watchCount"></result>
+            <result column="like_num" property="likeNum"></result>
+            <result column="album_id" property="albumId"></result>
+            <result column="resource_id" property="resourceId"></result>
+        </collection>
+    </resultMap>
+    <select id="showVideoAlbum" resultMap="VideoAlbumVOMap">
+        select album.id,album.count,album.like_num,album.category,video.id vid,video.name,video.column_type,video.type,video.cover,video.path,video.album_id,video.watch_count,video.like_num,video.resource_id from album,video where album.id=video.album_id and album.type=2
+    </select>
+</mapper>
