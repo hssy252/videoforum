@@ -1,14 +1,16 @@
 package com.xihu.conference.xihu.controller;
 
+import com.xihu.conference.xihu.constant.JwtClaimsConstant;
+import com.xihu.conference.xihu.dto.UserLoginDTO;
 import com.xihu.conference.xihu.entity.User;
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.properties.JwtProperties;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.UserService;
-import com.xihu.conference.xihu.utils.JWTUtils;
+import com.xihu.conference.xihu.utils.JwtUtil;
 import com.xihu.conference.xihu.utils.MD5Utils;
+import com.xihu.conference.xihu.vo.UserLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,10 +43,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     //TODO 测试阶段，后续采用扫码或者验证码
     @ApiOperation("用户注册")
-    @PostMapping("/add")
-    public Result add(@RequestBody User user) {
+    @PostMapping("/register")
+    public Result register(@RequestBody User user) {
         User newUser = userService.selectByName(user.getName());
         if (newUser == null) {//用户名没有被占用
             userService.insertOne(user);
@@ -56,19 +61,23 @@ public class UserController {
 
 
     @ApiOperation("用户登录")
-    @PostMapping("/login")
+    @PostMapping("/loginBypwd")
     public Result loginByPassword(@RequestBody User user) {
         User byName = userService.selectByName(user.getName());
         if (byName == null) {
-            return Result.error("用户名错误");
+            return Result.error("用户名不存在");
         }
+        if (Objects.equals(byName.getPassword(), "")) {
+            return Result.error("请设置密码");
+        }
+
         if (Objects.equals(MD5Utils.MD5(byName.getPassword()), MD5Utils.MD5(user.getPassword()))) {
             Map<String, Object> claims = new HashMap<>();
             claims.put("id", user.getId());
-            claims.put("username",user.getName());
-            String token = JWTUtils.genToken(claims);
+            claims.put("username", user.getName());
+            String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
             //将token存到redis中，方用于校验时效性
-            redisTemplate.opsForValue().set(token, token, 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set(token, token, 12, TimeUnit.HOURS);
             return Result.success(token);
         } else {
             return Result.error("密码错误");
@@ -76,16 +85,39 @@ public class UserController {
 
     }
 
+    @ApiOperation("小程序用户登录")
+    @PostMapping("/wxAppLogin")
+    public Result<UserLoginVO> wxAppLogin(@RequestBody UserLoginDTO userLoginDTO) {
+        //微信登录
+        User user = userService.wxLogin(userLoginDTO);
+
+        Long id = user.getId();
+        Map<String, Object> claims = new HashMap<>();
+        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+        claims.put(JwtClaimsConstant.USER_ID, id);
+
+        JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+
+        UserLoginVO userLoginVO = UserLoginVO
+            .builder()
+            .userId(id)
+            .openid(user.getOpenid())
+            .token(token)
+            .build();
+
+        return Result.success(userLoginVO);
+    }
+
 
     //TODO 后期改成从jwt中获取用户id
     @ApiOperation("用户签到并增加积分")
     @GetMapping("/sign")
     public Result sign(@RequestParam Long id, @RequestParam String date) {
-        String key = "user" + id;
+        String key = "user_" + id;
         if (Objects.equals(redisTemplate.opsForValue().get(key), date)) {
             return Result.error("已签到");
         } else {
-            redisTemplate.opsForValue().set(key, date, 8, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set(key, date, 24, TimeUnit.HOURS);
             userService.sign(id);
             return Result.success("签到成功");
         }
@@ -97,7 +129,7 @@ public class UserController {
         return Result.success(userService.selectById(id));
     }
 
-    @ApiOperation( "修改用户信息")
+    @ApiOperation("修改用户信息")
     @PutMapping("/userinfo")
     public Result updateInfo(@RequestBody User user) {
         userService.updateOne(user);

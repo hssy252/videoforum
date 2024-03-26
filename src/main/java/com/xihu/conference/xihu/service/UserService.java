@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.service;
 
+import com.xihu.conference.xihu.dto.UserLoginDTO;
 import com.xihu.conference.xihu.entity.User;
 
 /**
@@ -40,4 +41,6 @@ public interface UserService {
     User selectWhenLogin(User user);
 
     void updateImage(String imageUrl, Long id);
+
+    User wxLogin(UserLoginDTO userLoginDTO);
 }

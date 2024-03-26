@@ -7,6 +7,7 @@ create table user
     name           varchar(64)                       not null default '' comment '用户名',
     password       varchar(32)                       not null default '' comment '密码',
     image          varchar(255)                      not null default '' comment '图片url',
+    openid         varchar(255)                      not null default '' comment '唯一标识',
     identification varchar(16)                       not null default '线上观众',
     enterprise     varchar(255)                      not null default '',
     department     varchar(255)                      not null default '',
@@ -87,6 +88,7 @@ create table agenda
     id          bigint PRIMARY key not null auto_increment,
     title       varchar(32)        not null unique default '' comment '标题',
     tag         varchar(32)        not null        default '' comment '分类标签',
+    cover       varchar(255)       not null        default '' comment '封面url',
     content_url varchar(255)       not null        default '' comment '视频或直播url',
     sub_title   varchar(16)        not null        default '',
     start_time  datetime           not null        default CURRENT_TIMESTAMP,
@@ -179,7 +181,7 @@ create table album
     create_time timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_delete   tinyint     not null default 0 comment '0表示未删除',
-    unique key unique_category_type (category,type),
+    unique key unique_category_type (category, type),
     index idx_category_type (category, type),
     index idx_type (type)
 );
@@ -207,15 +209,15 @@ drop table if exists news;
 create table news
 (
     id           bigint       not null PRIMARY key auto_increment,
-    title        varchar(32)  not null  default '' comment '标题',
-    publisher    varchar(16)  not null        default '' comment '出版商',
+    title        varchar(32)  not null default '' comment '标题',
+    publisher    varchar(16)  not null default '' comment '出版商',
     image        varchar(255) not null comment '图片的url',
     description  varchar(128) not null,
-    publish_time date         not null        DEFAULT '2024-05-07',
-    create_time  timestamp    NOT NULL        DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    update_time  timestamp    NOT NULL        DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    is_delete    tinyint      not null        default 0,
-    unique key unique_title_publisher (title,publisher)
+    publish_time date         not null DEFAULT '2024-05-07',
+    create_time  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete    tinyint      not null default 0,
+    unique key unique_title_publisher (title, publisher)
 );
 
 drop table if exists news_content;

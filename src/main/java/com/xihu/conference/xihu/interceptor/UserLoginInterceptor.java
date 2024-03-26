@@ -1,6 +1,8 @@
 package com.xihu.conference.xihu.interceptor;
 
-import com.xihu.conference.xihu.utils.JWTUtils;
+import com.xihu.conference.xihu.exception.JwtFailException;
+import com.xihu.conference.xihu.properties.JwtProperties;
+import com.xihu.conference.xihu.utils.JwtUtil;
 import com.xihu.conference.xihu.utils.ThreadLocalUtils;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -18,22 +20,25 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
+public class UserLoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //令牌验证
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader(jwtProperties.getUserTokenName());
         //验证Token
         try {
             String realToken = stringRedisTemplate.opsForValue().get(token);
             if(realToken==null){
-                throw new RuntimeException();
+                throw new JwtFailException("登录令牌不存在");
             }
-            Map<String ,Object> claims = JWTUtils.parseToken(token);//验证失败会抛出异常
+            Map<String ,Object> claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(),token);//验证失败会抛出异常
             ThreadLocalUtils.set(claims);
             //放行
             return true;

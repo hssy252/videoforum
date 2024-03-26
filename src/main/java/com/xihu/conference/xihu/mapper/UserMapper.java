@@ -4,6 +4,7 @@ import com.xihu.conference.xihu.entity.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -51,4 +52,13 @@ public interface UserMapper {
 
     @Update("update user set image=#{imageUrl} where id=#{id}")
     void updateImage(String imageUrl, Long id);
+
+    @Select("select * from user where openid=#{openid}")
+    User getByOpenid(String openid);
+
+
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    @Insert("insert into user(openid) values (#{openid})")
+    void insertWithOpenId(User user);
+
 }

@@ -1,6 +1,6 @@
 package com.xihu.conference.xihu.controller;
 
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.utils.AliOssUtil;
 import io.swagger.annotations.Api;
 import java.io.IOException;

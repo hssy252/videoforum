@@ -1,7 +1,7 @@
 package com.xihu.conference.xihu.controller;
 
 import com.xihu.conference.xihu.entity.Album;
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.AlbumService;
 import com.xihu.conference.xihu.vo.ImageAlbumVO;
 import com.xihu.conference.xihu.vo.VideoAlbumVO;

@@ -1,6 +1,8 @@
 package com.xihu.conference.xihu.mapper;
 
 import com.xihu.conference.xihu.entity.Subscription;
+import com.xihu.conference.xihu.vo.SubscriptionActivityVO;
+import com.xihu.conference.xihu.vo.SubscriptionAgendaVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,8 +25,8 @@ public interface SubscriptionMapper {
     @Update("update subscription set is_delete=1 where user_id=#{userId} and matter_id=#{matterId} and type=#{type}")
     void deleteOne(Long userId, Long matterId, Short type);
 
-    @Select("select * from subscription where user_id=#{userId} and type=#{type} and is_delete=0 ")
-    List<Subscription> selectAll(Long userId, Short type);
+
+    List<SubscriptionAgendaVO> selectAllAgendas(Long userId);
 
     @Select("select * from subscription where user_id=#{userId} and matter_id=#{matterId} and type=#{type} and is_delete=0")
     Subscription selectOne(Long userId, Long matterId, Short type);
@@ -34,4 +36,7 @@ public interface SubscriptionMapper {
 
     @Update("update subscription set is_delete=0 where user_id=#{userId} and matter_id=#{agendaId} and type=#{type}")
     void subscribeOne(Long userId, Long agendaId, Short type);
+
+
+    List<SubscriptionActivityVO> selectAllActivities(Long userId);
 }

@@ -1,11 +1,12 @@
 package com.xihu.conference.xihu.controller;
 
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.entity.Subscription;
 import com.xihu.conference.xihu.service.SubscriptionService;
+import com.xihu.conference.xihu.vo.SubscriptionActivityVO;
+import com.xihu.conference.xihu.vo.SubscriptionAgendaVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,11 +50,11 @@ public class SubscriptionController {
         return Result.success();
     }
 
-    //TODO 显示的结果应该是vo
-    @ApiOperation("获取订阅")
-    @GetMapping("/show")
-    public Result<List<Subscription>> showAgendas(@RequestParam Long userId, @RequestParam Short type) {
-        return Result.success(subscriptionService.selectAll(userId, type));
+    // TODO 显示的结果应该是vo
+    @ApiOperation("获取订阅会议")
+    @GetMapping("/showAgendas")
+    public Result<List<SubscriptionAgendaVO>> showAgendas(@RequestParam Long userId) {
+        return Result.success(subscriptionService.selectAllAgendas(userId));
     }
 
     //检查是否订阅会议
@@ -66,6 +67,12 @@ public class SubscriptionController {
         } else {
             return Result.success("已订阅");
         }
+    }
+
+    @ApiOperation("获取订阅活动")
+    @GetMapping("/showActivities")
+    public Result<List<SubscriptionActivityVO>> showActivities(@RequestParam Long userId){
+        return Result.success(subscriptionService.selectAllActivities(userId));
     }
 
 }

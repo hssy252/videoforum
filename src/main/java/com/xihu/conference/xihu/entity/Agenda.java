@@ -20,7 +20,15 @@ public class Agenda {
 
    private String title;
 
+   /**
+    * 分类标签
+    */
    private String tag;
+
+   /**
+    * 封面url
+    */
+   private String cover;
 
    /**
     * 对应视频或直播的url

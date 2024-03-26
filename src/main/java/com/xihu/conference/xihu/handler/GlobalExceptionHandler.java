@@ -1,7 +1,7 @@
 package com.xihu.conference.xihu.handler;
 
 import com.xihu.conference.xihu.constant.MessageConstant;
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.exception.BaseException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import org.springframework.util.StringUtils;

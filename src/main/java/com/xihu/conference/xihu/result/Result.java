@@ -1,4 +1,4 @@
-package com.xihu.conference.xihu.entity;
+package com.xihu.conference.xihu.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

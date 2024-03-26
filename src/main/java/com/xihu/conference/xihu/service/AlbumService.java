@@ -1,7 +1,6 @@
 package com.xihu.conference.xihu.service;
 
 import com.xihu.conference.xihu.entity.Album;
-import com.xihu.conference.xihu.entity.Result;
 import com.xihu.conference.xihu.vo.ImageAlbumVO;
 import com.xihu.conference.xihu.vo.VideoAlbumVO;
 import java.util.List;

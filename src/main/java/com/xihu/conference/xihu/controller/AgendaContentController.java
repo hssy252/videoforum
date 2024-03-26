@@ -1,7 +1,7 @@
 package com.xihu.conference.xihu.controller;
 
 import com.xihu.conference.xihu.entity.AgendaContent;
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.AgendaContentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

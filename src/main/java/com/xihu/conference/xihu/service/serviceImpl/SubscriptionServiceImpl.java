@@ -3,6 +3,8 @@ package com.xihu.conference.xihu.service.serviceImpl;
 import com.xihu.conference.xihu.entity.Subscription;
 import com.xihu.conference.xihu.mapper.SubscriptionMapper;
 import com.xihu.conference.xihu.service.SubscriptionService;
+import com.xihu.conference.xihu.vo.SubscriptionActivityVO;
+import com.xihu.conference.xihu.vo.SubscriptionAgendaVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     //同时要返回对应会议或活动的细则
     @Override
-    public List<Subscription> selectAll(Long userId, Short type) {
-        return subscriptionMapper.selectAll(userId,type);
+    public List<SubscriptionAgendaVO> selectAllAgendas(Long userId) {
+        return subscriptionMapper.selectAllAgendas(userId);
     }
 
     @Override
@@ -57,5 +59,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public void subscriptionOne(Long userId, Long agendaId, Short type) {
         subscriptionMapper.subscribeOne(userId,agendaId,type);
+    }
+
+    @Override
+    public List<SubscriptionActivityVO> selectAllActivities(Long userId) {
+        return subscriptionMapper.selectAllActivities(userId);
     }
 }

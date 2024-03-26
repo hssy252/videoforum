@@ -1,6 +1,6 @@
 package com.xihu.conference.xihu.controller;
 
-import com.xihu.conference.xihu.entity.Result;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.entity.Video;
 import com.xihu.conference.xihu.service.VideoService;
 import io.swagger.annotations.Api;
