@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.TopicPostReferenceMapper">
+
+
+    <insert id="addReferences">
+        insert into topic_post_reference(post_id, topic_id) VALUES
+        <foreach collection="references" separator="," item="ref">
+            (#{ref.postId},#{ref.topicId})
+        </foreach>
+    </insert>
+</mapper>

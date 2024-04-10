@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.TopicMapper">
+
+    <select id="showTopics" resultType="com.xihu.conference.xihu.vo.TopicVO">
+        select id, content, hot, cover, post_num, watch_num from topic where  is_delete=0
+        order by hot desc
+    </select>
+</mapper>

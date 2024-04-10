@@ -109,7 +109,7 @@ public class AgendaController {
     @ApiOperation("点赞会议")
     @GetMapping("/like")
     public Result<Integer> createLike(@RequestParam Long id) {
-        //根据会议id实现点赞的增加,未完成
+        // TODO 根据会议id实现点赞的增加,未完成
         return Result.success();
     }
 }

@@ -11,7 +11,6 @@ import com.xihu.conference.xihu.properties.WeChatProperties;
 import com.xihu.conference.xihu.service.UserService;
 import com.xihu.conference.xihu.utils.HttpClientUtil;
 import com.xihu.conference.xihu.utils.MD5Utils;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +110,16 @@ public class UserServiceImpl implements UserService {
 
 
         return user;
+    }
+
+    @Override
+    public User selectByTel(String tel) {
+        return userMapper.selectByTel(tel);
+    }
+
+    @Override
+    public void insertOneWithTel(User user) {
+        userMapper.insertOneWithTel(user);
     }
 
     /**

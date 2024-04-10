@@ -1,6 +1,7 @@
 package com.xihu.conference.xihu.controller;
 
 import com.xihu.conference.xihu.constant.JwtClaimsConstant;
+import com.xihu.conference.xihu.dto.UserCodeLoginDTO;
 import com.xihu.conference.xihu.dto.UserLoginDTO;
 import com.xihu.conference.xihu.entity.User;
 import com.xihu.conference.xihu.properties.JwtProperties;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,14 +51,66 @@ public class UserController {
 
     //TODO 测试阶段，后续采用扫码或者验证码
     @ApiOperation("用户注册")
-    @PostMapping("/register")
-    public Result register(@RequestBody User user) {
-        User newUser = userService.selectByName(user.getName());
-        if (newUser == null) {//用户名没有被占用
-            userService.insertOne(user);
-            return Result.success();
+    @PostMapping("/code")
+    public Result register(@RequestBody UserCodeLoginDTO user, HttpServletRequest request) {
+
+        //先验证图形验证码
+        String code = user.getCode();
+        HttpSession session = request.getSession();
+
+        String id = session.getId();
+        // 将redis中的尝试次数减一
+        String verifyCodeKey = "VERIFY_CODE_" + id;
+        long num = redisTemplate.opsForValue().decrement(verifyCodeKey);
+
+        // 如果次数次数小于0 说明验证码已经失效
+        if (num < 0) {
+            return Result.error("图形验证码失效!");
+        }
+
+        // 将session中的取出对应session id生成的验证码
+        String serverCode = (String) session.getAttribute("SESSION_VERIFY_CODE_" + id);
+        // 校验验证码
+        if (null == serverCode || null == code || !serverCode.toUpperCase().equals(code.toUpperCase())) {
+            return Result.error("图形验证码错误!");
+        }
+
+        // 图形验证通过之后手动将图形验证码失效
+        redisTemplate.delete(verifyCodeKey);
+
+        //图形验证码正确后的流程
+        String SMScode = redisTemplate.opsForValue().get("SMS_" + user.getTel());
+        if (SMScode == null) {
+            return Result.error("短信验证码已过期");
+        }
+
+        //短信验证码未过期则判断是否正确,这里做具体业务相关
+        if (user.getMessageCode().equals(SMScode)) {
+            User newUser = userService.selectByTel(user.getTel());
+
+            //手机号没有被占用
+            Map<String, Object> claims = new HashMap<>();
+            if (newUser == null) {
+
+                User realUser = new User();
+                realUser.setTel(user.getTel());
+                userService.insertOneWithTel(realUser);
+                //返回token信息
+                claims.put("id", realUser.getId());
+                String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+                //将token存到redis中，方用于校验时效性
+                redisTemplate.opsForValue().set(token, token, 12, TimeUnit.HOURS);
+                return Result.success(token);
+            } else {
+                //返回token信息
+                claims.put("id", newUser.getId());
+                String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+                //将token存到redis中，方用于校验时效性
+                redisTemplate.opsForValue().set(token, token, 12, TimeUnit.HOURS);
+                return Result.success(token);
+            }
         } else {
-            return Result.error("该用户名已存在");
+            return Result.error("短信验证码错误");
         }
     }
 

@@ -283,4 +283,81 @@ create table resource
     is_delete   tinyint      not null default 0
 );
 
+drop table if exists topic;
+create table topic
+(
+    id          bigint       not null primary key auto_increment comment '主键',
+    content     varchar(32)  not null unique comment '话题标题',
+    hot         int          not null default 100 comment '热度',
+    cover       varchar(255) not null comment '封面链接',
+    post_num    int          not null default 0 comment '话题帖子的数量',
+    watch_num   int          not null default 0 comment '观看数',
+    create_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete   tinyint      not null default 0
+);
 
+drop table if exists post;
+create table post
+(
+    id           bigint        not null primary key auto_increment comment '主键',
+    user_id      bigint        not null default 0 comment '发帖用户id',
+    content      varchar(510)  not null default '' comment '帖子内容',
+    hot          int           not null default 100 comment '热度',
+    images       varchar(2046) not null default '' comment '帖子图片的url，用逗号隔开',
+    comment_num  int           not null default 0 comment '帖子的评论数',
+    like_num     int           not null default 0 comment '帖子的点赞数',
+    top_flag     tinyint       not null default 0 comment '0表示不置顶,1表示置顶',
+    publish_time datetime      not null comment '发帖日期',
+    create_time  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time  timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete    tinyint       not null default 0
+);
+
+
+drop table if exists comment;
+create table comment
+(
+    id          bigint      not null primary key auto_increment,
+    user_id     bigint      not null comment '用户id',
+    post_id     bigint      not null comment '帖子id',
+    content     varchar(32) not null comment '评论内容',
+    ip          varchar(16) not null comment 'ip地址',
+    like_count  int         not null default 0 comment '点赞数',
+    parent_id   bigint      not null default 0 comment '父评论id,0代表没有父评论',
+    create_time timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete   tinyint     not null default 0,
+    index idx_user_post (user_id, post_id),
+    index idx_user (user_id),
+    index idx_parent (parent_id)
+);
+
+
+drop table if exists praise;
+create table praise
+(
+    id          bigint    not null primary key auto_increment comment '主键',
+    user_id     bigint    not null comment '点赞用户id',
+    liked_id    bigint    not null comment '被点赞的事务的id',
+    type        tinyint   not null default 1 comment '1表示对帖子点赞，2表示对评论点赞',
+    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete   tinyint   not null default 0,
+    unique index uniq_user_type_liked (user_id, type, liked_id),
+    index idx_user_type (user_id, type),
+    index idx_liked_type (liked_id, type)
+);
+
+
+drop table if exists topic_post_reference;
+create table topic_post_reference
+(
+    id bigint not null auto_increment primary key comment '主键',
+    post_id bigint not null comment '帖子id',
+    topic_id bigint not null comment '话题id',
+    create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_delete   tinyint   not null default 0,
+    unique index idx_post_topic(post_id,topic_id)
+)

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.PostMapper">
+
+    <insert id="addPost" useGeneratedKeys="true" keyProperty="id">
+        insert into post(user_id, content, images, publish_time)
+        values (#{userId}, #{content}, #{images}, #{publishTime})
+    </insert>
+
+    <resultMap id="PostVoMap" type="com.xihu.conference.xihu.vo.PostVO">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="content" property="content"></result>
+        <result column="hot" property="hot"></result>
+        <result column="comment_num" property="commentNum"></result>
+        <result column="like_num" property="likeNum"></result>
+        <result column="publish_time" property="publishTime"></result>
+        <collection column="id" property="topicIds" ofType="java.lang.Long" select="getTopicIdsByPostId"></collection>
+        <collection property="comments" ofType="com.xihu.conference.xihu.vo.CommentVO">
+            <id column="cid" property="id"></id>
+            <result column="content" property="content"></result>
+            <result column="ip" property="ip"></result>
+            <result column="like_count" property="likeCount"></result>
+            <result column="parent_id" property="parentId"></result>
+            <association property="userCommentVO" resultMap="UserCommentVOMap"></association>
+        </collection>
+    </resultMap>
+    <resultMap id="UserCommentVOMap" type="com.xihu.conference.xihu.vo.UserCommentVO">
+        <id column="uid" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="image" property="image"></result>
+    </resultMap>
+
+    <select id="showByTopicWithComments" resultMap="PostVoMap">
+        select p.id,
+               p.user_id,
+               p.content,
+               p.hot,
+               p.comment_num,
+               p.like_num,
+               p.publish_time,
+               c.id cid,
+               c.content,
+               c.ip,
+               c.like_count,
+               c.parent_id,
+               u.id uid,
+               u.name,
+               u.image
+        from post p
+                 left join comment c on p.id = c.post_id
+                 left join user u on c.user_id = u.id
+        where p.id in (select post_id from topic_post_reference where topic_id=#{topicId})
+    </select>
+    <select id="getTopicIdsByPostId" resultType="java.lang.Long">
+        select topic_id
+        from topic_post_reference
+        where post_id = #{id}
+    </select>
+</mapper>

@@ -60,5 +60,10 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id")
     @Insert("insert into user(openid) values (#{openid})")
     void insertWithOpenId(User user);
+    @Select("select * from user where tel=#{tel}")
+    User selectByTel(String tel);
 
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    @Insert("insert into user(name,tel) values (#{tel},#{tel})")
+    void insertOneWithTel(User user);
 }

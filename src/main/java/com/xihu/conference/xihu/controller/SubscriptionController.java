@@ -29,7 +29,7 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    @ApiOperation("订阅会议")
+    @ApiOperation("订阅会议或精彩活动")
     @GetMapping("/subscribe")
     public Result subscribeAgenda(@RequestParam Long userId, @RequestParam Long matterId, @RequestParam Short type) {
         Subscription subscription = subscriptionService.checkIfExist(userId,matterId,type);
@@ -50,7 +50,7 @@ public class SubscriptionController {
         return Result.success();
     }
 
-    // TODO 显示的结果应该是vo
+
     @ApiOperation("获取订阅会议")
     @GetMapping("/showAgendas")
     public Result<List<SubscriptionAgendaVO>> showAgendas(@RequestParam Long userId) {
@@ -58,7 +58,7 @@ public class SubscriptionController {
     }
 
     //检查是否订阅会议
-    @ApiOperation("是否订阅会议")
+    @ApiOperation("是否订阅会议或活动")
     @GetMapping("/check")
     public Result<String> check(@RequestParam Long userId, @RequestParam Long matterId, @RequestParam Short type) {
         Subscription subscription = subscriptionService.selectOne(userId, matterId, type);

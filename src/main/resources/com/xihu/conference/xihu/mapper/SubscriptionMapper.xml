@@ -17,9 +17,15 @@
                a.timespan
         from subscription s
                  left join agenda a on s.matter_id = a.id
-        where s.type = 0 and s.user_id=#{userId}
+        where s.type = 0
+          and s.user_id = #{userId}
     </select>
     <select id="selectAllActivities" resultType="com.xihu.conference.xihu.vo.SubscriptionActivityVO">
-        select s.id,s.user_id,a.id activityId, a.name,a.content_id,a.cover,a.timespan  from subscription s left join activity a on s.matter_id=a.id where s.type=1 and s.user_id=#{userId} and a.is_bookable=1
+        select s.id, s.user_id, a.id activityId, a.name, a.content_id, a.cover, a.timespan
+        from subscription s
+                 left join activity a on s.matter_id = a.id
+        where s.type = 1
+          and s.user_id = #{userId}
+          and a.is_bookable = 1
     </select>
 </mapper>

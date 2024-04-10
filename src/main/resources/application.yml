@@ -36,7 +36,9 @@ aliyun:
     bucket-name: ${xihu.alioss.bucket-name}
     access-key-id: ${xihu.alioss.access-key-id}
     access-key-secret: ${xihu.alioss.access-key-secret}
-
+  sms:
+    access-key: ${xihu.alisms.key}
+    access-secret: ${xihu.alisms.secret}
 logging:
   config: classpath:logback-spring.xml
   level:

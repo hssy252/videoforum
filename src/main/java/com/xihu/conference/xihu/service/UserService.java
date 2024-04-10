@@ -43,4 +43,8 @@ public interface UserService {
     void updateImage(String imageUrl, Long id);
 
     User wxLogin(UserLoginDTO userLoginDTO);
+
+    User selectByTel(String tel);
+
+    void insertOneWithTel(User user);
 }
