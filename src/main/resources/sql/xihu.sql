@@ -6,7 +6,7 @@ create table user
     id             bigint primary key auto_increment not null,
     name           varchar(64)                       not null default '' comment '用户名',
     password       varchar(32)                       not null default '' comment '密码',
-    image          varchar(255)                      not null default '' comment '图片url',
+    image          varchar(255)                      not null default 'https://static-swiperimages.oss-cn-wuhan-lr.aliyuncs.com/images/default.png' comment '图片url',
     openid         varchar(255)                      not null default '' comment '唯一标识',
     identification varchar(16)                       not null default '线上观众',
     enterprise     varchar(255)                      not null default '',

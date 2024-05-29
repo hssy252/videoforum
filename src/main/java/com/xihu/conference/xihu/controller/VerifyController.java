@@ -5,6 +5,7 @@ import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.utils.SMSUtils;
 import com.xihu.conference.xihu.utils.ValidateCodeUtils;
 import com.xihu.conference.xihu.utils.VerifyUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/verify")
+@Api(tags = "验证相关接口")
 public class VerifyController {
 
     @Autowired
@@ -47,6 +49,7 @@ public class VerifyController {
      * @param request  Request对象
      * @throws Exception
      */
+    @ApiOperation("获取图形验证码")
     @PostMapping("/getCode")
     public void getCode(HttpServletResponse response, HttpServletRequest request) {
         // 获取到session
@@ -95,6 +98,7 @@ public class VerifyController {
      * @param request Request对象
      * @return
      */
+    @ApiOperation("验证图形验证码")
     @GetMapping("/checkCode")
     public Result checkCode(@RequestParam String code, HttpServletRequest request) {
         HttpSession session = request.getSession();

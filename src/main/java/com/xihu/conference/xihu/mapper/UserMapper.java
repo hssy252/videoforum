@@ -19,8 +19,13 @@ import org.apache.ibatis.annotations.Update;
 public interface UserMapper {
 
 
+    @Options(useGeneratedKeys = true,keyProperty = "id")
     @Insert("insert into user(name,password) values (#{name},#{password})")
     void insertOne(User user);
+
+    @Options(useGeneratedKeys = true,keyProperty = "id")
+    @Insert("insert into user(tel,name) values (#{tel},#{name})")
+    void insertWithPhoneAndName(User user);
 
     @Delete("delete from user where id=#{id}")
     void deleteOne(Long id);

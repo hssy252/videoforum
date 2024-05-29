@@ -28,10 +28,33 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Autowired
     private UserLoginInterceptor userLoginInterceptor;
 
-    //TODO 用于注册拦截路径
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(loginInterceptor).excludePathPatterns("");
+        registry.addInterceptor(userLoginInterceptor)
+            .excludePathPatterns("/achievement/**",
+                "/activity/**",
+                "/agendaContent/show/**",
+                "/album/**",
+                "/comment/add",
+                "/goods/**",
+                "images/show/**",
+                "/integral/showAll",
+                "/integral/showOne",
+                "/integralRecord/show",
+                "/integralRecord/show/**",
+                "/news/**",
+                "/post/show",
+                "/topic/**",
+                "/upload/**",
+                "/verify/**",
+                "/video/**")
+            .addPathPatterns("/agenda/like",
+                "/subscription/**",
+                "/user/sign",
+                "/user/userinfo",
+                "/user/img");
+
     }
 
     /**

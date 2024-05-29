@@ -1,20 +1,26 @@
 package com.xihu.conference.xihu.controller;
 
 import com.xihu.conference.xihu.constant.JwtClaimsConstant;
+import com.xihu.conference.xihu.constant.OssConstant;
 import com.xihu.conference.xihu.dto.UserCodeLoginDTO;
 import com.xihu.conference.xihu.dto.UserLoginDTO;
+import com.xihu.conference.xihu.dto.WxAppLoginDTO;
 import com.xihu.conference.xihu.entity.User;
 import com.xihu.conference.xihu.properties.JwtProperties;
 import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.UserService;
+import com.xihu.conference.xihu.utils.AliOssUtil;
 import com.xihu.conference.xihu.utils.JwtUtil;
 import com.xihu.conference.xihu.utils.MD5Utils;
 import com.xihu.conference.xihu.vo.UserLoginVO;
+import com.xihu.conference.xihu.vo.WxAppLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 功能简述
@@ -49,7 +56,10 @@ public class UserController {
     @Autowired
     private JwtProperties jwtProperties;
 
-    //TODO 测试阶段，后续采用扫码或者验证码
+    @Autowired
+    private AliOssUtil aliOssUtil;
+
+
     @ApiOperation("用户注册")
     @PostMapping("/code")
     public Result register(@RequestBody UserCodeLoginDTO user, HttpServletRequest request) {
@@ -140,7 +150,7 @@ public class UserController {
 
     }
 
-    @ApiOperation("小程序用户登录")
+    @ApiOperation("小程序用户登录,通过wx.login函数")
     @PostMapping("/wxAppLogin")
     public Result<UserLoginVO> wxAppLogin(@RequestBody UserLoginDTO userLoginDTO) {
         //微信登录
@@ -148,10 +158,10 @@ public class UserController {
 
         Long id = user.getId();
         Map<String, Object> claims = new HashMap<>();
-        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
         claims.put(JwtClaimsConstant.USER_ID, id);
-
-        JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+        String token = JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
+        //将token存到redis中，方用于校验时效性
+        redisTemplate.opsForValue().set(token, token, 12, TimeUnit.HOURS);
 
         UserLoginVO userLoginVO = UserLoginVO
             .builder()
@@ -161,6 +171,45 @@ public class UserController {
             .build();
 
         return Result.success(userLoginVO);
+    }
+
+    // TODO 对接后的wx小程序登录,待对接
+    @ApiOperation("小程序直接登录")
+    @PostMapping("/wxLogin")
+    public Result<WxAppLoginVO> wxLogin(@RequestBody WxAppLoginDTO wxAppLoginDTO) {
+        //查询是否有该用户
+        String phone = wxAppLoginDTO.getPhone();
+        User user = userService.selectByTel(phone);
+        String token;
+        Long id;
+        String imgUrl = "";
+        String nickName;
+        String identification = "线上观众";
+        if (user == null) {
+            User appUser = User.builder()
+                .tel(phone)
+                .name(wxAppLoginDTO.getNickName())
+                .build();
+            userService.insertOneWithTelAndName(appUser);
+            id = appUser.getId();
+            nickName = wxAppLoginDTO.getNickName();
+        } else {
+            id = user.getId();
+            imgUrl = user.getImage();
+            nickName = user.getName();
+            identification = user.getIdentification();
+        }
+        token = getToken(id);
+        WxAppLoginVO wxAppLoginVO = WxAppLoginVO.builder()
+            .userId(id)
+            .token(token)
+            .imgUrl(imgUrl)
+            .name(nickName)
+            .identification(identification)
+            .build();
+        //将token存到redis中，方用于校验时效性
+        redisTemplate.opsForValue().set(token, token, 12, TimeUnit.HOURS);
+        return Result.success(wxAppLoginVO);
     }
 
 
@@ -191,12 +240,21 @@ public class UserController {
         return Result.success();
     }
 
-    //TODO 后续应该改为用户上传文件
+
     @ApiOperation("修改用户头像")
-    @PutMapping("/img")
-    public Result updateImage(String imageUrl, Long id) {
+    @PostMapping("/img")
+    public Result updateImage(MultipartFile file, Long id) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String name = UUID.randomUUID().toString() + originalName.substring(originalName.lastIndexOf("."));
+        String imageUrl = aliOssUtil.upload(file.getBytes(), OssConstant.USER_ICON_DIRECTORY+"/"+name);
         userService.updateImage(imageUrl, id);
         return Result.success(imageUrl);
+    }
+
+    private String getToken(Long id) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.USER_ID, id);
+        return JwtUtil.createJWT(jwtProperties.getUserSecretKey(), jwtProperties.getUserTtl(), claims);
     }
 
 }

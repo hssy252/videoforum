@@ -47,4 +47,6 @@ public interface UserService {
     User selectByTel(String tel);
 
     void insertOneWithTel(User user);
+
+    void insertOneWithTelAndName(User appUser);
 }

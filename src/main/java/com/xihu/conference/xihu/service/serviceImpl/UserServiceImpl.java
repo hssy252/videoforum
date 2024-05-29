@@ -13,6 +13,7 @@ import com.xihu.conference.xihu.utils.HttpClientUtil;
 import com.xihu.conference.xihu.utils.MD5Utils;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void insertOne(User user) {
-        user.setPassword(MD5Utils.MD5(user.getPassword()));
+        String password = user.getPassword();
+        if (!StringUtils.isBlank(password)){
+            user.setPassword(MD5Utils.MD5(password));
+        }
         userMapper.insertOne(user);
     }
 
@@ -120,6 +124,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertOneWithTel(User user) {
         userMapper.insertOneWithTel(user);
+    }
+
+    @Override
+    public void insertOneWithTelAndName(User appUser) {
+        userMapper.insertWithPhoneAndName(appUser);
     }
 
     /**

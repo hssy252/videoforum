@@ -26,20 +26,22 @@ public class UploadController {
     private AliOssUtil aliOssUtil;
 
 
-    // TODO 未向数据库中添加记录,以及放入文件夹
+    // TODO 未向数据库中添加记录
     @PostMapping("/image")
-    public Result<String> uploadImage(MultipartFile file,String imageName) throws IOException {
+    public Result<String> uploadImage(MultipartFile file,String imageName,String fileDirectory) throws IOException {
         String originalName = file.getOriginalFilename();
         String name = UUID.randomUUID().toString() + originalName.substring(originalName.lastIndexOf("."));
+        name = fileDirectory+"/"+ name;
         String url = aliOssUtil.upload(file.getBytes(),name);
         return Result.success(url);
     }
 
-    // TODO 未向数据库中添加记录,以及放入文件夹
+    // TODO 未向数据库中添加记录
     @PostMapping("/video")
-    public Result<String> uploadVideo(MultipartFile file,String videoName,String cover) throws IOException {
+    public Result<String> uploadVideo(MultipartFile file,String videoName,String cover,String fileDirectory) throws IOException {
         String originalName = file.getOriginalFilename();
         String name = UUID.randomUUID().toString() + originalName.substring(originalName.lastIndexOf("."));
+        name = fileDirectory+"/"+ name;
         String url = aliOssUtil.upload(file.getBytes(),name);
         return Result.success(url);
     }
