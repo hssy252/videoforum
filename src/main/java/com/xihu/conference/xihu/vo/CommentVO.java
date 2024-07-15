@@ -27,6 +27,6 @@ public class CommentVO {
 
     private Long parentId;
 
-    private UserCommentVO userCommentVO;
+    private SimpleUserVO simpleUserVO;
 
 }

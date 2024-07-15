@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.CommentMapper">
+
+    <resultMap id="CommentVOMap" type="com.xihu.conference.xihu.vo.CommentVO">
+        <id property="id" column="id"></id>
+        <result property="content" column="content"></result>
+        <result property="ip" column="ip"></result>
+        <result property="likeCount" column="like_count"></result>
+        <result property="parentId" column="parent_id"></result>
+        <association property="simpleUserVO" column="user_id" javaType="com.xihu.conference.xihu.vo.SimpleUserVO"
+            select="com.xihu.conference.xihu.mapper.UserMapper.selectByUserId"></association>
+    </resultMap>
+    <select id="showByPostId" resultMap="CommentVOMap">
+        select c.id,c.content,c.ip,c.like_count,c.parent_id,c.user_id from comment c where post_id=#{Id}
+     </select>
+</mapper>

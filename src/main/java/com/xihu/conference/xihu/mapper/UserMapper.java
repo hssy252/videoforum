@@ -1,6 +1,7 @@
 package com.xihu.conference.xihu.mapper;
 
 import com.xihu.conference.xihu.entity.User;
+import com.xihu.conference.xihu.vo.SimpleUserVO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -67,6 +68,9 @@ public interface UserMapper {
     void insertWithOpenId(User user);
     @Select("select * from user where tel=#{tel}")
     User selectByTel(String tel);
+
+    @Select("select id userId,name,image from user where id=#{userId}")
+    SimpleUserVO selectByUserId(Long userId);
 
     @Options(useGeneratedKeys = true,keyProperty = "id")
     @Insert("insert into user(name,tel) values (#{tel},#{tel})")

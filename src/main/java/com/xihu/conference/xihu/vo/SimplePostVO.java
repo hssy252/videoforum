@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostVO {
+public class SimplePostVO {
 
     /**
      * 帖子的id
@@ -41,7 +41,5 @@ public class PostVO {
      * 帖子关联的topicId列表
      */
     private List<Long> topicIds;
-
-    private List<CommentVO> comments;
 
 }

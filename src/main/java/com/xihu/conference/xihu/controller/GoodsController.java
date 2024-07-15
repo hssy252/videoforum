@@ -71,6 +71,7 @@ public class GoodsController {
     @ApiOperation("减少商品数量")
     @GetMapping("/consume")
     public Result consumeSome(@RequestParam Integer num, @RequestParam Long id) {
+        //用户还需减少积分
         goodsService.consumeSome(num, id);
         return Result.success();
     }

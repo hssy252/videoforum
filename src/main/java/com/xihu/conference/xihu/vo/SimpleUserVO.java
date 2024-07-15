@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.vo;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +12,17 @@ import lombok.NoArgsConstructor;
  * @author hssy
  * @version 1.0
  */
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCommentVO {
+public class SimpleUserVO implements Serializable {
 
-    private Long id;
+    private Long userId;
+
     private String name;
+
     private String image;
 
 }

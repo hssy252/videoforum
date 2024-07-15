@@ -173,7 +173,7 @@ public class UserController {
         return Result.success(userLoginVO);
     }
 
-    // TODO 对接后的wx小程序登录,待对接
+
     @ApiOperation("小程序直接登录")
     @PostMapping("/wxLogin")
     public Result<WxAppLoginVO> wxLogin(@RequestBody WxAppLoginDTO wxAppLoginDTO) {

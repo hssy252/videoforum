@@ -91,7 +91,7 @@ public class AgendaServiceImpl implements AgendaService {
         int year = LocalDateTime.now().getYear();
         //将localDate转换为Date
         LocalDate localDate = LocalDate.of(year,dates[0],dates[1]);
-        System.out.println(dates[1]);
+//        System.out.println(dates[1]);
         Instant instant = LocalDateTime.of(localDate, LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault()).toInstant();
         Date beginDate = Date.from(instant);
         calendar.setTime(beginDate);

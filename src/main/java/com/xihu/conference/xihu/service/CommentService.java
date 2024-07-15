@@ -1,6 +1,8 @@
 package com.xihu.conference.xihu.service;
 
 import com.xihu.conference.xihu.dto.CommentDTO;
+import com.xihu.conference.xihu.vo.CommentVO;
+import java.util.List;
 
 /**
  * 功能简述
@@ -11,4 +13,6 @@ import com.xihu.conference.xihu.dto.CommentDTO;
 public interface CommentService {
 
     void addComment(CommentDTO commentDTO);
+
+    List<CommentVO> showByPostId(Long id);
 }

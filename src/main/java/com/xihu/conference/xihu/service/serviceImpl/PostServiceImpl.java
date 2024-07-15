@@ -1,12 +1,16 @@
 package com.xihu.conference.xihu.service.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xihu.conference.xihu.dto.PostDTO;
 import com.xihu.conference.xihu.entity.Post;
 import com.xihu.conference.xihu.entity.TopicPostReference;
 import com.xihu.conference.xihu.mapper.PostMapper;
 import com.xihu.conference.xihu.mapper.TopicPostReferenceMapper;
+import com.xihu.conference.xihu.result.PageResult;
 import com.xihu.conference.xihu.service.PostService;
 import com.xihu.conference.xihu.vo.PostVO;
+import com.xihu.conference.xihu.vo.SimplePostVO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,6 +68,19 @@ public class PostServiceImpl implements PostService {
     public List<PostVO> showByTopic(Long topicId) {
 
         return postMapper.showByTopicWithComments(topicId);
+    }
+
+    @Override
+    public PageResult pageQuery() {
+        List<PostVO> pages = postMapper.pageQuery();
+        return new PageResult(pages.size(), pages);
+    }
+
+    @Override
+    public PageResult simplePageQuery(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        Page<SimplePostVO> posts =  postMapper.simplePageQuery();
+        return new PageResult(posts.getTotal(),posts.getResult());
     }
 
 

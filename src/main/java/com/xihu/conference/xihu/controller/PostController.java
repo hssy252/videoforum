@@ -1,6 +1,8 @@
 package com.xihu.conference.xihu.controller;
 
+import com.github.pagehelper.Page;
 import com.xihu.conference.xihu.dto.PostDTO;
+import com.xihu.conference.xihu.result.PageResult;
 import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.PostService;
 import com.xihu.conference.xihu.vo.PostVO;
@@ -42,5 +44,16 @@ public class PostController {
         return Result.success(postService.showByTopic(topicId));
     }
 
+    @GetMapping("/showAll")
+    @ApiOperation("假分页显示所有帖子")
+    public PageResult pageQueryAll(){
+        return postService.pageQuery();
+    }
+
+    @GetMapping("/show")
+    @ApiOperation("简单显示帖子,不显示评论")
+    public PageResult simplePageQuery(@RequestParam int pageNum,@RequestParam int pageSize){
+        return postService.simplePageQuery(pageNum,pageSize);
+    }
 
 }
