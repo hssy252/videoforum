@@ -29,6 +29,8 @@ public class PostVO {
 
     private String content;
 
+    private String images;
+
     private Integer hot;
 
     private Integer commentNum;

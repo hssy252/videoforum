@@ -16,6 +16,7 @@
         <result column="comment_num" property="commentNum"></result>
         <result column="like_num" property="likeNum"></result>
         <result column="publish_time" property="publishTime"></result>
+        <result column="images" property="images"></result>
         <association property="user" column="user_id"
             javaType="com.xihu.conference.xihu.vo.SimpleUserVO"
             select="com.xihu.conference.xihu.mapper.UserMapper.selectByUserId"  />
@@ -41,6 +42,7 @@
                p.content,
                p.hot,
                p.comment_num,
+               p.images,
                p.like_num,
                p.publish_time,
                c.id cid,
@@ -91,6 +93,7 @@
         <result property="commentNum" column="comment_num"></result>
         <result property="likeNum" column="like_num"></result>
         <result property="publishTime" column="publish_time"></result>
+        <result column="images" property="images"></result>
         <association property="user" column="user_id" javaType="com.xihu.conference.xihu.vo.SimpleUserVO"
             select="com.xihu.conference.xihu.mapper.UserMapper.selectByUserId"></association>
         <collection column="id" property="topicIds" ofType="java.lang.Long" select="getTopicIdsByPostId"></collection>
@@ -99,6 +102,7 @@
         select p.id,
                p.user_id,
                p.content,
+               p.images,
                p.hot,
                p.comment_num,
                p.like_num,

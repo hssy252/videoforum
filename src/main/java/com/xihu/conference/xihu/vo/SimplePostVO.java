@@ -29,6 +29,8 @@ public class SimplePostVO {
 
     private String content;
 
+    private String images;
+
     private Integer hot;
 
     private Integer commentNum;
