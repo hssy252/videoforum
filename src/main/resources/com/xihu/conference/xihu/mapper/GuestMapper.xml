@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xihu.conference.xihu.mapper.GuestMapper">
+
+
+    <resultMap id="GuestAgendaVOMap" type="com.xihu.conference.xihu.vo.GuestAgendaVO">
+        <id property="agendaId" column="aid"></id>
+        <result property="agendaTitle" column="atitle"></result>
+        <result property="agendaStartTime" column="astartTime"></result>
+    </resultMap>
+
+    <resultMap id="GuestVOMap" type="com.xihu.conference.xihu.vo.GuestVO">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"></result>
+        <result property="description" column="description"></result>
+        <collection property="guestAgendaVO" resultMap="GuestAgendaVOMap"></collection>
+    </resultMap>
+    <select id="showAll" resultMap="GuestVOMap">
+        select guest.id,name,description,a.id aid,a.title atitle,a.start_time astartTime
+            from guest left join agenda a on guest.agenda_id = a.id where guest.is_delete=0
+    </select>
+</mapper>
