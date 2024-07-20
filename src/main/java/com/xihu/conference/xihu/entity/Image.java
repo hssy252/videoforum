@@ -2,7 +2,10 @@ package com.xihu.conference.xihu.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Timestamp;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 功能简述
@@ -11,6 +14,9 @@ import lombok.Data;
  * @version 1.0
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Image {
 
     private Long id;

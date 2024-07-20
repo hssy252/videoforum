@@ -23,6 +23,8 @@ public class TopicVO {
 
     private Integer hot;
 
+    private Integer likeNum;
+
     private String cover;
 
     private Integer postNum;

@@ -1,5 +1,7 @@
 package com.xihu.conference.xihu.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +26,9 @@ public class CommentVO {
     private String ip;
 
     private Integer likeCount;
+
+    @JsonFormat(pattern = "yyyy年MM月dd日 hh:mm")
+    private Timestamp createTime;
 
     private Long parentId;
 

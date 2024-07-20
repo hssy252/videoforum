@@ -5,6 +5,7 @@ import com.xihu.conference.xihu.vo.TopicVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 功能简述
@@ -19,4 +20,10 @@ public interface TopicMapper {
     void addTopic(Topic topic);
 
     List<TopicVO> showTopics();
+
+    @Update("update topic set like_num=like_num+1 where id=#{likedId}")
+    void addLikeNum(Long likeId);
+
+    @Update("update topic set like_num=like_num-1 where id=#{likedId}")
+    void subLikeNum(Long likeId);
 }

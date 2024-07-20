@@ -5,6 +5,7 @@ import com.xihu.conference.xihu.vo.CommentVO;
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 功能简述
@@ -19,4 +20,10 @@ public interface CommentMapper {
     void addComment(Comment comment);
 
     List<CommentVO> showByPostId(Long id);
+
+    @Update("update comment set like_count=like_count+1 where id=#{likedId}")
+    void addLikeNum(Long likeId);
+
+    @Update("update comment set like_count=like_count-1 where id=#{likedId}")
+    void subLikeNum(Long likeId);
 }

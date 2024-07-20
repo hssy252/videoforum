@@ -42,7 +42,7 @@ public class PraiseController {
      * @return
      */
     @GetMapping("/postLike")
-    @ApiOperation("根据帖子id查找点赞用户号id")
+    @ApiOperation("根据帖子或评论id查找点赞用户号id")
     public Result<List<Long>> showUserIds(@RequestParam Long likedId,@RequestParam Short type){
         return Result.success(praiseService.showUserIds(likedId,type));
     }

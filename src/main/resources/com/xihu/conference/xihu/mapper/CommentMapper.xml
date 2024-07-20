@@ -9,11 +9,12 @@
         <result property="content" column="content"></result>
         <result property="ip" column="ip"></result>
         <result property="likeCount" column="like_count"></result>
+        <result property="createTime" column="create_time"></result>
         <result property="parentId" column="parent_id"></result>
         <association property="simpleUserVO" column="user_id" javaType="com.xihu.conference.xihu.vo.SimpleUserVO"
             select="com.xihu.conference.xihu.mapper.UserMapper.selectByUserId"></association>
     </resultMap>
     <select id="showByPostId" resultMap="CommentVOMap">
-        select c.id,c.content,c.ip,c.like_count,c.parent_id,c.user_id from comment c where post_id=#{Id}
+        select c.id,c.content,c.ip,c.create_time,c.like_count,c.parent_id,c.user_id from comment c where post_id=#{Id}
      </select>
 </mapper>
