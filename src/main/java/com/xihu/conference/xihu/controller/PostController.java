@@ -38,6 +38,12 @@ public class PostController {
         return Result.success();
     }
 
+    @PostMapping("/delete")
+    public Result deletePost(Long postId){
+        postService.deletePost(postId);
+        return Result.success();
+    }
+
     @GetMapping("/showByTopic")
     @ApiOperation("根据话题显示帖子")
     public Result<List<PostVO>> showByTopic(@RequestParam Long topicId) {

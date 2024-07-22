@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 功能简述
@@ -35,6 +36,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
+    @Transactional
     public void addPost(PostDTO postDTO) {
 
         Post post = new Post();
@@ -51,6 +53,9 @@ public class PostServiceImpl implements PostService {
 
         //再向标签帖子关系表中添加记录
         List<Long> topicIds = postDTO.getTopicIds();
+        if (topicIds==null||topicIds.size()==0){
+            return;
+        }
         List<TopicPostReference> references = new ArrayList<>();
         for (Long topicId : topicIds) {
             TopicPostReference topicPostReference = new TopicPostReference();
@@ -81,6 +86,11 @@ public class PostServiceImpl implements PostService {
         PageHelper.startPage(pageNum,pageSize);
         Page<SimplePostVO> posts =  postMapper.simplePageQuery();
         return new PageResult(posts.getTotal(),posts.getResult());
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        postMapper.deletePost(postId);
     }
 
 

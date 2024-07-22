@@ -30,6 +30,9 @@ public interface PostMapper {
 
     Page<SimplePostVO> simplePageQuery();
 
+    @Update("update post set is_delete=1 where id=#{postId}")
+    void deletePost(Long postId);
+
 
     @Update("update post set like_num=like_num+1 where id=#{likedId}")
     void addLikeNum(Long likeId);

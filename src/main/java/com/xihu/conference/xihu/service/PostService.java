@@ -21,4 +21,6 @@ public interface PostService {
     PageResult pageQuery();
 
     PageResult simplePageQuery(int pageNum, int pageSize);
+
+    void deletePost(Long postId);
 }

@@ -68,7 +68,7 @@ public class PraiseController {
     }
 
     @PostMapping("/dislike")
-    @ApiOperation("点赞")
+    @ApiOperation("取消点赞")
     public Result dislike(@RequestBody LikedDTO likedDTO){
 
         praiseService.disLike(likedDTO);

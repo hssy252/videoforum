@@ -56,7 +56,7 @@
         from post p
                  left join comment c on p.id = c.post_id
                  left join user u on c.user_id = u.id
-        where p.id in (select post_id from topic_post_reference where topic_id = #{topicId})
+        where p.id in (select post_id from topic_post_reference where topic_id = #{topicId}) and p.is_delete=0
     </select>
     <select id="getTopicIdsByPostId" resultType="java.lang.Long">
         select topic_id
@@ -82,7 +82,7 @@
         from post p
                  left join comment c on p.id = c.post_id
                  left join user u on c.user_id = u.id
-
+        where p.is_delete=0
 
     </select>
 
@@ -107,7 +107,7 @@
                p.comment_num,
                p.like_num,
                p.publish_time
-        from post p
+        from post p where p.is_delete=0
     </select>
 
 </mapper>
