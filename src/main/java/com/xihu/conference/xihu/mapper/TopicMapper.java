@@ -26,4 +26,10 @@ public interface TopicMapper {
 
     @Update("update topic set like_num=like_num-1 where id=#{likedId}")
     void subLikeNum(Long likeId);
+
+    @Update("update topic set post_num=post_num+1 where id=#{topicId}")
+    void addPostNum(Long topicId);
+
+    @Update("update topic set watch_num=watch_num+1 where id=#{topicId}")
+    void addWatchNum(Long topicId);
 }

@@ -39,4 +39,7 @@ public interface PostMapper {
 
     @Update("update post set like_num=like_num-1 where id=#{likedId}")
     void subLikeNum(Long likeId);
+
+    @Update("update post set comment_num = comment_num+1 where id = #{postId}")
+    void addCommentNum(Long postId);
 }

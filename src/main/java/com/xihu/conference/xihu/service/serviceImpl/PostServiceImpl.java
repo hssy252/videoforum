@@ -6,6 +6,7 @@ import com.xihu.conference.xihu.dto.PostDTO;
 import com.xihu.conference.xihu.entity.Post;
 import com.xihu.conference.xihu.entity.TopicPostReference;
 import com.xihu.conference.xihu.mapper.PostMapper;
+import com.xihu.conference.xihu.mapper.TopicMapper;
 import com.xihu.conference.xihu.mapper.TopicPostReferenceMapper;
 import com.xihu.conference.xihu.result.PageResult;
 import com.xihu.conference.xihu.service.PostService;
@@ -33,6 +34,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private TopicPostReferenceMapper topicPostReferenceMapper;
+
+    @Autowired
+    private TopicMapper topicMapper;
 
 
     @Override
@@ -62,16 +66,22 @@ public class PostServiceImpl implements PostService {
             topicPostReference.setTopicId(topicId);
             topicPostReference.setPostId(postId);
             references.add(topicPostReference);
+            topicMapper.addPostNum(topicId);
         }
 
         topicPostReferenceMapper.addReferences(references);
+
+
+
 
     }
 
     // TODO 加入缓存
     @Override
+    @Transactional
     public List<PostVO> showByTopic(Long topicId) {
 
+        topicMapper.addWatchNum(topicId);
         return postMapper.showByTopicWithComments(topicId);
     }
 

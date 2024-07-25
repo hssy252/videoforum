@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class PostDTO {
 
     private List<Long> topicIds;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp publishTime;
 }

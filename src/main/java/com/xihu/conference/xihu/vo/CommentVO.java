@@ -27,7 +27,7 @@ public class CommentVO {
 
     private Integer likeCount;
 
-    @JsonFormat(pattern = "yyyy年MM月dd日 hh:mm")
+    @JsonFormat(pattern = "yyyy年MM月dd日 HH:mm")
     private Timestamp createTime;
 
     private Long parentId;
