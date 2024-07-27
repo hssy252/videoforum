@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class GuestAgendaVO {
 
     private String agendaTitle;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Timestamp agendaStartTime;
 
 }

@@ -1,8 +1,10 @@
 package com.xihu.conference.xihu.service;
 
 import com.xihu.conference.xihu.entity.Guest;
+import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.vo.ExpertVO;
 import com.xihu.conference.xihu.vo.GuestVO;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,4 +20,10 @@ public interface GuestService {
     List<GuestVO> showAll();
 
     List<ExpertVO> showExperts();
+
+    List<String> showDates();
+
+    List<GuestVO> showPrevious();
+
+    List<GuestVO> showByDate(String date);
 }

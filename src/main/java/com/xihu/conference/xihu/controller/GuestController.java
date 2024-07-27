@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,21 +33,40 @@ public class GuestController {
 
     @PostMapping("/add")
     @ApiOperation("增加嘉宾或专家相关信息")
-    public Result addExpert(@RequestBody Guest guest){
+    public Result addExpert(@RequestBody Guest guest) {
         guestService.addExpert(guest);
         return Result.success();
     }
 
     @GetMapping("/showAll")
-    @ApiOperation("显示所有嘉宾及其会议")
-    public Result<List<GuestVO>> showAll(){
+    @ApiOperation("显示现届所有嘉宾及其会议")
+    public Result<List<GuestVO>> showAll() {
         return Result.success(guestService.showAll());
     }
 
     @GetMapping("/showExperts")
     @ApiOperation("显示专家委员会成员")
-    public Result<List<ExpertVO>> showExperts(){
+    public Result<List<ExpertVO>> showExperts() {
         return Result.success(guestService.showExperts());
+    }
+
+    // TODO
+    @GetMapping("/showByDate")
+    @ApiOperation("根据日期显示嘉宾")
+    public Result<List<GuestVO>> showByDate(@RequestParam String date) {
+        return Result.success(guestService.showByDate(date));
+    }
+
+    @GetMapping("/showDates")
+    @ApiOperation("显示所有日期")
+    public Result<List<String>> showDates() {
+        return Result.success(guestService.showDates());
+    }
+
+    @GetMapping("/showPrevious")
+    @ApiOperation("显示往届嘉宾")
+    public Result<List<GuestVO>> showPrevious() {
+        return Result.success(guestService.showPrevious());
     }
 
 

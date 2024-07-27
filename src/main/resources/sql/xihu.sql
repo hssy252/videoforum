@@ -163,11 +163,14 @@ create table guest
     description nvarchar(64) not null,
     image       varchar(510) not null,
     agenda_id   bigint       not null comment '视频id',
+    agenda_time date         default null comment '参会日期，不参会则为空',
+    is_previous tinyint      not null default 0 comment '1表示往届',
     is_expert   tinyint      not null default 0,
     create_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_delete   tinyint      not null default 0 comment '0表示未删除',
-    index idx_name (name)
+    index idx_name (name),
+    index idx_date (agenda_time)
 );
 
 
@@ -363,4 +366,3 @@ create table topic_post_reference
     is_delete   tinyint   not null default 0,
     unique index idx_post_topic(post_id,topic_id)
 )
-

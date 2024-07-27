@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCodeLoginDTO {
+public class  UserCodeLoginDTO {
     private String tel;
     private String messageCode;
     private String code;

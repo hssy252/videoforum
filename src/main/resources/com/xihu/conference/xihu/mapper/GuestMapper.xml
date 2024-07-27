@@ -15,10 +15,22 @@
         <id column="id" property="id"></id>
         <result property="name" column="name"></result>
         <result property="description" column="description"></result>
+        <result column="image" property="image"></result>
         <collection property="guestAgendaVO" resultMap="GuestAgendaVOMap"></collection>
     </resultMap>
     <select id="showAll" resultMap="GuestVOMap">
-        select guest.id,name,description,a.id aid,a.title atitle,a.start_time astartTime
-            from guest left join agenda a on guest.agenda_id = a.id where guest.is_delete=0
+        select guest.id,name,description,image,a.id aid,a.title atitle,a.start_time astartTime
+            from guest left join agenda a on guest.agenda_id = a.id where guest.is_delete=0 and
+            guest.is_previous=0
+    </select>
+    <select id="showPrevious" resultMap="GuestVOMap">
+        select guest.id,name,description,image,a.id aid,a.title atitle,a.start_time astartTime
+        from guest left join agenda a on guest.agenda_id = a.id where guest.is_delete=0 and
+            guest.is_previous=1
+    </select>
+    <select id="showByDate" resultMap="GuestVOMap">
+        select guest.id,name,description,image,a.id aid,a.title atitle,a.start_time astartTime
+        from guest left join agenda a on guest.agenda_id = a.id where guest.is_delete=0 and
+            guest.is_previous=0 and guest.agenda_time=#{parsed}
     </select>
 </mapper>
