@@ -1,6 +1,7 @@
 package com.xihu.conference.xihu.service;
 
 import com.xihu.conference.xihu.entity.Image;
+import com.xihu.conference.xihu.vo.ImageVO;
 import java.util.List;
 
 /**
@@ -26,4 +27,8 @@ public interface ImageService {
     List<String> getColumnType();
 
     void updateById(Image image);
+
+    List<String> showColumns();
+
+    List<ImageVO> showByColumn(String column);
 }

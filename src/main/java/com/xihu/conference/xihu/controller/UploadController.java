@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.controller;
 
+import com.xihu.conference.xihu.dto.VideoDTO;
 import com.xihu.conference.xihu.entity.Image;
 import com.xihu.conference.xihu.entity.Video;
 import com.xihu.conference.xihu.result.Result;
@@ -65,7 +66,7 @@ public class UploadController {
         String name = UUID.randomUUID() + originalName.substring(originalName.lastIndexOf("."));
         name = fileDirectory + "/" + name;
         String url = aliOssUtil.upload(file.getBytes(), name);
-        Video video = Video.builder()
+        VideoDTO video = VideoDTO.builder()
             .name(videoName)
             .path(url)
             .albumId(albumId)

@@ -1,6 +1,8 @@
 package com.xihu.conference.xihu.service;
 
+import com.xihu.conference.xihu.dto.VideoDTO;
 import com.xihu.conference.xihu.entity.Video;
+import com.xihu.conference.xihu.vo.VideoVO;
 import java.util.List;
 
 /**
@@ -12,7 +14,11 @@ import java.util.List;
 public interface VideoService {
 
 
-    void addVideo(Video video);
+    void addVideo(VideoDTO video);
 
     List<Video> showVideo();
+
+    List<VideoVO> showByColumn(String column);
+
+    List<String> showColumns();
 }

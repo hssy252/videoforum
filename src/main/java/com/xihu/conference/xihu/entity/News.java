@@ -1,5 +1,6 @@
 package com.xihu.conference.xihu.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -28,6 +29,7 @@ public class News {
 
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date publishTime;
 
 

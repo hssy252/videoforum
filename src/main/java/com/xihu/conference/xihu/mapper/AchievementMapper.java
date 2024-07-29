@@ -36,4 +36,7 @@ public interface AchievementMapper {
 
     @Update("update achievement set count=count+#{watchNum} where id=#{id}")
     void addWatchCount(Long id, Long watchNum);
+
+    @Select("select distinct category from achievement where is_delete=0")
+    List<String> showTags();
 }

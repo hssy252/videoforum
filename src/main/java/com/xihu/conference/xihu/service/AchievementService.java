@@ -24,4 +24,6 @@ public interface AchievementService {
     List<Achievement> showByTag(String category);
 
     void addWatchCount(Long id, Long watchNum);
+
+    List<String> showTags();
 }

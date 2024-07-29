@@ -38,6 +38,13 @@ public class AchievementController {
         return Result.success();
     }
 
+
+    @ApiOperation("显示分类tag")
+    @GetMapping("/showTags")
+    public Result<List<String>> showTags(){
+        return Result.success(achievementService.showTags());
+    }
+
     @ApiOperation("逻辑删除成果")
     @GetMapping("/{id}")
     public Result deleteOneById(@PathVariable Long id) {
@@ -53,7 +60,8 @@ public class AchievementController {
     }
 
     @ApiOperation("根据category显示成果")
-    @GetMapping Result<List<Achievement>> showByTag(@RequestParam String category){
+    @GetMapping("/showByTag")
+    public Result<List<Achievement>> showByTag(@RequestParam String category){
         return Result.success(achievementService.showByTag(category));
     }
 

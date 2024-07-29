@@ -3,6 +3,7 @@ package com.xihu.conference.xihu.service.serviceImpl;
 import com.xihu.conference.xihu.entity.Image;
 import com.xihu.conference.xihu.mapper.ImageMapper;
 import com.xihu.conference.xihu.service.ImageService;
+import com.xihu.conference.xihu.vo.ImageVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,15 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void updateById(Image image) {
 
+    }
+
+    @Override
+    public List<String> showColumns() {
+        return imageMapper.showColumns();
+    }
+
+    @Override
+    public List<ImageVO> showByColumn(String column) {
+        return imageMapper.showByColumn(column);
     }
 }

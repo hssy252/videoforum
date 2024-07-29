@@ -54,4 +54,9 @@ public class AchievementServiceImpl implements AchievementService {
     public void addWatchCount(Long id, Long watchNum) {
         achievementMapper.addWatchCount(id,watchNum);
     }
+
+    @Override
+    public List<String> showTags() {
+        return achievementMapper.showTags();
+    }
 }

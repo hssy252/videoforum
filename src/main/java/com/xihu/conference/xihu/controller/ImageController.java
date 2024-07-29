@@ -4,6 +4,7 @@ import com.xihu.conference.xihu.entity.Image;
 import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.AlbumService;
 import com.xihu.conference.xihu.service.ImageService;
+import com.xihu.conference.xihu.vo.ImageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -46,4 +47,16 @@ public class ImageController {
         return Result.success(imageService.selectByType(type));
     }
 
+
+    @ApiOperation("显示栏目")
+    @GetMapping("/showColumns")
+    public Result<List<String>> showColumns(){
+        return Result.success(imageService.showColumns());
+    }
+
+    @ApiOperation("根据栏目显示")
+    @GetMapping("/showByColumn")
+    public Result<List<ImageVO>> showByColumn(@RequestParam String column){
+        return Result.success(imageService.showByColumn(column));
+    }
 }
