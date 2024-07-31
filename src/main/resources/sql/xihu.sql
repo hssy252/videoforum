@@ -277,7 +277,7 @@ drop table if exists resource;
 create table resource
 (
     id          bigint       not null primary key auto_increment,
-    name        nvarchar(32) not null default '',
+    name        varchar(64) not null default '',
     cover       varchar(255) not null default '',
     description nvarchar(64) not null default '',
     url         varchar(255) not null default '',

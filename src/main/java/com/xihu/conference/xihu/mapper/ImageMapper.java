@@ -25,6 +25,6 @@ public interface ImageMapper {
     @Select("select distinct column_type from image where is_delete=0")
     List<String> showColumns();
 
-    @Select("select id,name,column_type,type,url,album_id from image where column_type=#{column} and is_delete=0")
+    @Select("select id,name,column_type,type,url,album_id from image where column_type=#{column} and type=3 and is_delete=0")
     List<ImageVO> showByColumn(String column);
 }
