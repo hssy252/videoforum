@@ -50,4 +50,10 @@ public class ResourceController {
         return Result.success();
     }
 
+    @GetMapping("/fetch")
+    @ApiOperation("根据资源id返回下载链接")
+    public Result<String> fetchUrl(@RequestParam Long id){
+        return Result.success(resourceService.fetchUrl(id));
+    }
+
 }

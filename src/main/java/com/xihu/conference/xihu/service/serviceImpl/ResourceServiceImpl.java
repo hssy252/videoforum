@@ -1,6 +1,6 @@
 package com.xihu.conference.xihu.service.serviceImpl;
 
-import com.xihu.conference.xihu.mapper.ResouceMapper;
+import com.xihu.conference.xihu.mapper.ResourceMapper;
 import com.xihu.conference.xihu.service.ResourceService;
 import com.xihu.conference.xihu.utils.AliOssUtil;
 import com.xihu.conference.xihu.vo.ResourceVO;
@@ -26,7 +26,7 @@ public class ResourceServiceImpl implements ResourceService {
     private static final String PPT_PREFIX = "ppt/";
 
     @Autowired
-    private ResouceMapper resouceMapper;
+    private ResourceMapper resourceMapper;
 
     @Autowired
     private AliOssUtil aliOssUtil;
@@ -43,7 +43,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<ResourceVO> listResources(Short type) {
-        return resouceMapper.listResources(type);
+        return resourceMapper.listResources(type);
     }
 
     @Transactional
@@ -58,7 +58,12 @@ public class ResourceServiceImpl implements ResourceService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        resouceMapper.upload(ossName,url,cover,description,type);
+        resourceMapper.upload(ossName,url,cover,description,type);
+    }
+
+    @Override
+    public String fetchUrl(Long id) {
+        return resourceMapper.fetchUrl(id);
     }
 
 }

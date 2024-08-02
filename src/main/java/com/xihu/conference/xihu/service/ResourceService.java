@@ -18,4 +18,6 @@ public interface ResourceService {
     List<ResourceVO> listResources(Short type);
 
     void upload(MultipartFile file, String cover, String description,Short type);
+
+    String fetchUrl(Long id);
 }
