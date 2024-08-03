@@ -48,4 +48,9 @@ public class ActivityServiceImpl implements ActivityService {
     public List<Activity> showAll() {
         return activityMapper.showAll();
     }
+
+    @Override
+    public void addWatchNum(Long id) {
+        activityMapper.addWatchNum(id);
+    }
 }

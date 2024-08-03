@@ -68,4 +68,10 @@ public class ActivityController {
         return Result.success(activityService.showTags());
     }
 
+    @PostMapping("/watchNum")
+    @ApiOperation("根据活动id增加浏览量")
+    public Result addWatchNum(Long id){
+        activityService.addWatchNum(id);
+        return Result.success();
+    }
 }

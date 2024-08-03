@@ -26,6 +26,7 @@
             <result column="ccontent" property="content"></result>
             <result column="ip" property="ip"></result>
             <result column="like_count" property="likeCount"></result>
+            <result column="create_time" property="createTime"></result>
             <result column="parent_id" property="parentId"></result>
             <association property="simpleUserVO" resultMap="SimpleCommentVOMap"></association>
         </collection>
@@ -49,6 +50,7 @@
                c.content ccontent,
                c.ip,
                c.like_count,
+               c.create_time,
                c.parent_id,
                u.id uid,
                u.name,
@@ -108,6 +110,29 @@
                p.like_num,
                p.publish_time
         from post p where p.is_delete=0
+    </select>
+    <select id="showByUserId" resultMap="PostVoMap">
+        select p.id,
+               p.user_id,
+               p.content,
+               p.hot,
+               p.comment_num,
+               p.images,
+               p.like_num,
+               p.publish_time,
+               c.id cid,
+               c.content ccontent,
+               c.ip,
+               c.create_time,
+               c.like_count,
+               c.parent_id,
+               u.id uid,
+               u.name,
+               u.image
+        from post p
+                 left join comment c on p.id = c.post_id
+                 left join user u on c.user_id = u.id
+        where p.user_id=#{userId} and p.is_delete=0
     </select>
 
 </mapper>

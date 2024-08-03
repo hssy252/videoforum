@@ -22,4 +22,6 @@ public interface ActivityService {
     List<Activity> selectByTag(String tag);
 
     List<Activity> showAll();
+
+    void addWatchNum(Long id);
 }

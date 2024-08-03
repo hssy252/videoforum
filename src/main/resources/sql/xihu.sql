@@ -94,6 +94,7 @@ create table agenda
     start_time  datetime           not null        default CURRENT_TIMESTAMP,
     end_time    datetime           not null        default CURRENT_TIMESTAMP,
     timespan    varchar(32)        not null comment '如18:00-18:45',
+    like_count  int                not null        default 1000 comment '点赞数量',
     location    nvarchar(32)       not null        default '线上直播',
     is_live     tinyint            not null        default 0 comment '0表示已结束，1表示进行中',
     resource_id bigint             not null        default 0 comment '0代表没有资源',
@@ -147,6 +148,7 @@ create table activity
     description  varchar(255) not null,
     is_bookable  tinyint      not null default 0 comment '0代表不可订阅',
     book_count   int          not null default 0 comment '订阅人数',
+    watch_num    int          not null default 100 comment '浏览量',
     timespan     varchar(32)  not null,
     create_time  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time  timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -163,7 +165,7 @@ create table guest
     description nvarchar(64) not null,
     image       varchar(510) not null,
     agenda_id   bigint       not null comment '视频id',
-    agenda_time date         default null comment '参会日期，不参会则为空',
+    agenda_time date                  default null comment '参会日期，不参会则为空',
     is_previous tinyint      not null default 0 comment '1表示往届',
     is_expert   tinyint      not null default 0,
     create_time timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -277,7 +279,7 @@ drop table if exists resource;
 create table resource
 (
     id          bigint       not null primary key auto_increment,
-    name        varchar(64) not null default '',
+    name        varchar(64)  not null default '',
     cover       varchar(255) not null default '',
     description nvarchar(64) not null default '',
     url         varchar(255) not null default '',
@@ -345,7 +347,7 @@ create table praise
     id          bigint    not null primary key auto_increment comment '主键',
     user_id     bigint    not null comment '点赞用户id',
     liked_id    bigint    not null comment '被点赞的事务的id',
-    type        tinyint   not null default 1 comment '1表示对帖子点赞，2表示对评论点赞，3表示对话题点赞',
+    type        tinyint   not null default 1 comment '1表示对帖子点赞，2表示对评论点赞，3表示对话题点赞,4表示对会议点赞',
     create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_delete   tinyint   not null default 0,
@@ -358,11 +360,11 @@ create table praise
 drop table if exists topic_post_reference;
 create table topic_post_reference
 (
-    id bigint not null auto_increment primary key comment '主键',
-    post_id bigint not null comment '帖子id',
-    topic_id bigint not null comment '话题id',
+    id          bigint    not null auto_increment primary key comment '主键',
+    post_id     bigint    not null comment '帖子id',
+    topic_id    bigint    not null comment '话题id',
     create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     is_delete   tinyint   not null default 0,
-    unique index idx_post_topic(post_id,topic_id)
+    unique index idx_post_topic (post_id, topic_id)
 )

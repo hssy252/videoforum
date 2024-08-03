@@ -2,7 +2,6 @@ package com.xihu.conference.xihu.service;
 
 import com.xihu.conference.xihu.dto.PostDTO;
 import com.xihu.conference.xihu.result.PageResult;
-import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.vo.PostVO;
 import java.util.List;
 
@@ -23,4 +22,6 @@ public interface PostService {
     PageResult simplePageQuery(int pageNum, int pageSize);
 
     void deletePost(Long postId);
+
+    List<PostVO> showByUserId(Long userId);
 }

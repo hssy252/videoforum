@@ -54,4 +54,10 @@ public interface AgendaMapper {
 
     @Select("select * from agenda where start_time >= #{beginTime} and end_time <= #{endTime} and is_delete=0")
     List<Agenda> selectByDate(String beginTime, String endTime);
+
+    @Update("update agenda set like_count=like_count+1 where id=#{likedId}")
+    void addLikeNum(Long likedId);
+
+    @Update("update agenda set like_count=like_count-1 where id=#{likedId}")
+    void subLikeNum(Long likedId);
 }

@@ -42,4 +42,6 @@ public interface PostMapper {
 
     @Update("update post set comment_num = comment_num+1 where id = #{postId}")
     void addCommentNum(Long postId);
+
+    List<PostVO> showByUserId(Long userId);
 }

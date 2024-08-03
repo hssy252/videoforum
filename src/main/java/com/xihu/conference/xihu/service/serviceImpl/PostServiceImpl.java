@@ -103,5 +103,10 @@ public class PostServiceImpl implements PostService {
         postMapper.deletePost(postId);
     }
 
+    @Override
+    public List<PostVO> showByUserId(Long userId) {
+        return postMapper.showByUserId(userId);
+    }
+
 
 }

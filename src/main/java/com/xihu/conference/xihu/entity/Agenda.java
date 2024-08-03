@@ -45,6 +45,8 @@ public class Agenda {
 
    private String timespan;
 
+   private Integer likeCount;
+
    private String location;
 
    /**

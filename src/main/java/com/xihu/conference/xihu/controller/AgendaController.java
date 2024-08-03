@@ -1,8 +1,10 @@
 package com.xihu.conference.xihu.controller;
 
+import com.xihu.conference.xihu.dto.LikedDTO;
 import com.xihu.conference.xihu.entity.Agenda;
 import com.xihu.conference.xihu.result.Result;
 import com.xihu.conference.xihu.service.AgendaService;
+import com.xihu.conference.xihu.service.PraiseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -28,6 +30,9 @@ public class AgendaController {
 
     @Autowired
     private AgendaService agendaService;
+
+    @Autowired
+    private PraiseService praiseService;
 
     @ApiOperation("增加大会")
     @PostMapping("/add")
@@ -108,8 +113,12 @@ public class AgendaController {
 
     @ApiOperation("点赞会议")
     @GetMapping("/like")
-    public Result<Integer> createLike(@RequestParam Long id) {
-//         TODO 根据会议id实现点赞的增加,未完成
+    public Result createLike(@RequestParam Long agendaId, @RequestParam Long userId) {
+        praiseService.like(LikedDTO.builder()
+            .likedId(agendaId)
+            .userId(userId)
+            .type((short) 4)
+            .build());
         return Result.success();
     }
 }

@@ -1,6 +1,7 @@
 package com.xihu.conference.xihu.service.serviceImpl;
 
 import com.xihu.conference.xihu.dto.LikedDTO;
+import com.xihu.conference.xihu.mapper.AgendaMapper;
 import com.xihu.conference.xihu.mapper.CommentMapper;
 import com.xihu.conference.xihu.mapper.PostMapper;
 import com.xihu.conference.xihu.mapper.PraiseMapper;
@@ -31,6 +32,9 @@ public class PraiseServiceImpl implements PraiseService {
 
     @Autowired
     private TopicMapper topicMapper;
+
+    @Autowired
+    private AgendaMapper agendaMapper;
 
     @Override
     public List<Long> showUserIds(Long likedId, Short type) {
@@ -86,6 +90,9 @@ public class PraiseServiceImpl implements PraiseService {
                 case 3: {
                     topicMapper.addLikeNum(likedId);
                 }
+                case 4: {
+                    agendaMapper.addLikeNum(likedId);
+                }
                 break;
                 default:
                     break;
@@ -103,6 +110,9 @@ public class PraiseServiceImpl implements PraiseService {
                 break;
                 case 3: {
                     topicMapper.subLikeNum(likedId);
+                }
+                case 4: {
+                    agendaMapper.subLikeNum(likedId);
                 }
                 break;
                 default:

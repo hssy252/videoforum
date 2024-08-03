@@ -36,4 +36,16 @@ public interface ActivityMapper {
 
     @Update("update activity set book_count=#{num} where id=#{id}")
     void updateBookCount(Long id,Integer num);
+
+    @Update("update activity set watch_num=watch_num+1 where id=#{id}")
+    void addWatchNum(Long id);
+
+    @Update("update activity set watch_num=watch_num-1 where id=#{id}")
+    void subWatchNum(Long matterId);
+
+    @Update("update activity set book_count=book_count+1 where id=#{id}")
+    void addBookCount(Long id);
+
+    @Update("update activity set book_count=book_count-1 where id=#{id}")
+    void subBookCount(Long matterId);
 }

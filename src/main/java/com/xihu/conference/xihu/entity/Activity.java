@@ -33,6 +33,8 @@ public class Activity {
 
     private Integer bookCount;
 
+    private Integer watchNum;
+
     private String timespan;
 
     private Short isBookable;
